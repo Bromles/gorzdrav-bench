@@ -1,8 +1,8 @@
 # Gorzdrav fetch benchmark
 
-- [Golang](go)
 - [NodeJS](js)
 - [Rust](rust)
+- [Golang](go)
 
 ## Results
 
