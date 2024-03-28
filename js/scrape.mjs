@@ -31,38 +31,47 @@ await fs
 
 if (hospitals.result) {
   for (const hospital of hospitals.result) {
-    const specialtiesRes = await fetch(
-      `${baseUrl}/schedule/lpu/${hospital.id}/specialties`
-    );
-
-    specialtiesRes
-      .json()
-      .then(async (specialties) => {
-        await fs.writeFile(
-          `${dirName}/specialties/${hospital.id}.json`,
-          JSON.stringify(specialties, null, 2)
-        );
-
-        if (specialties.result) {
-          await Promise.allSettled(
-            specialties.result.map(async (specialty) => {
-              const doctorsRes = await fetch(
-                `${baseUrl}/schedule/lpu/${hospital.id}/speciality/${specialty.id}/doctors`
-              );
-
-              doctorsRes
-                .json()
-                .then(async (doctors) => {
-                  await fs.writeFile(
-                    `${dirName}/hospitals-specialties/${hospital.id}-${specialty.id}.json`,
-                    JSON.stringify(doctors, null, 2)
-                  );
-                })
-                .catch(() => undefined);
-            })
-          );
-        }
-      })
-      .catch(() => undefined);
+    await fetchSpecialtiesForHospital(hospital);
   }
 }
+
+const fetchSpecialtiesForHospital = async (hospital) => {
+  const specialtiesRes = await fetch(
+    `${baseUrl}/schedule/lpu/${hospital.id}/specialties`
+  );
+
+  specialtiesRes
+    .json()
+    .then(async (specialties) => {
+      await fs.writeFile(
+        `${dirName}/specialties/${hospital.id}.json`,
+        JSON.stringify(specialties, null, 2)
+      );
+
+      if (specialties.result) {
+        await Promise.allSettled(
+          specialties.result.map(
+            async (specialty) =>
+              await fetchDoctorsForSpecialty(hospital, specialty)
+          )
+        );
+      }
+    })
+    .catch(() => undefined);
+};
+
+const fetchDoctorsForSpecialty = async (hospital, specialty) => {
+  const doctorsRes = await fetch(
+    `${baseUrl}/schedule/lpu/${hospital.id}/speciality/${specialty.id}/doctors`
+  );
+
+  doctorsRes
+    .json()
+    .then(async (doctors) => {
+      await fs.writeFile(
+        `${dirName}/hospitals-specialties/${hospital.id}-${specialty.id}.json`,
+        JSON.stringify(doctors, null, 2)
+      );
+    })
+    .catch(() => undefined);
+};

@@ -1,10 +1,12 @@
 # Golang version
 
-How to run in PowerShell:
+How to run:
 
 - Install Golang SDK from the [official website](https://go.dev/doc/install)
 - `go build -ldflags "-s -w"`
-- `.\measure.ps1`
+- Run benchmark:
+  - Windows with PowerShell: `.\measure.ps1`
+  - macOS/Linux: `./measure.sh`
 
 How to clean after running:
 

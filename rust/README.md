@@ -1,10 +1,12 @@
 # Rust version
 
-How to run in PowerShell:
+How to run:
 
 - Install Rust SDK from the [official website](https://www.rust-lang.org/learn/get-started)
 - `cargo build --release`
-- `.\measure.ps1`
+- Run benchmark:
+  - Windows with PowerShell: `.\measure.ps1`
+  - macOS/Linux: `./measure.sh`
 
 How to clean after running:
 

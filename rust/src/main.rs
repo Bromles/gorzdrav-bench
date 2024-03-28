@@ -80,7 +80,8 @@ async fn fetch_specialties(
             continue;
         };
 
-        let specialties_data = fetch_specialties_for_hospital(&hospital_id, base_url, dir_name).await;
+        let specialties_data =
+            fetch_specialties_for_hospital(&hospital_id, base_url, dir_name).await;
 
         let Some(specialties) = specialties_data.get("result") else {
             continue;
@@ -152,11 +153,17 @@ async fn fetch_doctors_for_specialty(
         "{}/schedule/lpu/{}/speciality/{}/doctors",
         base_url, hospital_id, specialty_id
     ))
-    .await
-    .unwrap()
-    .text()
-    .await
-    .unwrap();
+    .await;
+
+    let Ok(res) = res else {
+        return;
+    };
+
+    let res = res.text().await;
+
+    let Ok(res) = res else {
+        return;
+    };
 
     let file = File::create(
         dir_name

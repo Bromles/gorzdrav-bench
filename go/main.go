@@ -121,11 +121,19 @@ func fetchSpecialtiesForHospital(hospitalId string) map[string]any {
 }
 
 func fetchDoctorsForSpecialty(hospitalId string, specialtyId string) {
-	doctorsRes, _ := http.Get(baseUrl + "/schedule/lpu/" + hospitalId + "/speciality/" + specialtyId + "/doctors")
+	doctorsRes, err := http.Get(baseUrl + "/schedule/lpu/" + hospitalId + "/speciality/" + specialtyId + "/doctors")
+
+	if err != nil {
+		return
+	}
 
 	var doctors map[string]any
 	bytes := readBody(doctorsRes)
-	json.Unmarshal(bytes, &doctors)
+	err = json.Unmarshal(bytes, &doctors)
+
+	if err != nil {
+		return
+	}
 
 	os.WriteFile(filepath.Join(dirName, "hospitals-specialties", hospitalId+"-"+specialtyId+".json"), bytes, os.ModePerm)
 }
