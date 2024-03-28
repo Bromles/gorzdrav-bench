@@ -1,0 +1,1 @@
+Measure-Command {Start-Process node .\scrape.mjs -Wait -NoNewWindow}

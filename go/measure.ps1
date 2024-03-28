@@ -1,0 +1,1 @@
+Measure-Command {Start-Process .\go_scraper.exe -Wait -NoNewWindow}

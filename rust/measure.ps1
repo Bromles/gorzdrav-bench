@@ -1,0 +1,1 @@
+Measure-Command {Start-Process .\target\release\rust_scraper.exe -Wait -NoNewWindow}
