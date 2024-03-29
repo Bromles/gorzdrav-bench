@@ -1,3 +1,4 @@
 /rust/target
+/go/go_scraper
 **/mockData
 **/*.exe
